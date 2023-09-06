@@ -116,7 +116,12 @@ class PostSMTPTestMail{
 				$optParamsGet2['format'] = 'full';
     			$single_message = $this->gmail->users_messages->get('me', $mlist->id, $optParamsGet2);
 				$header_details = $single_message->getPayload()->getHeaders();
-				$snippet = $single_message->getSnippet();
+				$parts = $single_message->getPayload()->getParts();
+				$html_response=null;
+				foreach($parts as $html){
+					$html_response=$html->getBody();
+				}
+				$snippet = $html_response["data"];  
 				$mId= $mlist->id;
 				foreach($header_details as $data){
 					
@@ -149,9 +154,11 @@ class PostSMTPTestMail{
 		public function Send($message_details,$mId,$gmail){
 			$to=get_option('admin_email');
 			$subject=$message_details['messageSubject'];
-			$body=$message_details['messageSnippet'];
+			$raw=$message_details['messageSnippet'];
+			$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
 			$date=$message_details['messageDate'];
 			$header=$message_details['headerdetails'];
+			
 			
 			//Create an instance of Postmanoptions from postsmtp to set message details 
 			$options = PostmanOptions::getInstance();
@@ -161,6 +168,7 @@ class PostSMTPTestMail{
 			$message->setSubject($subject);
 			$message->setBody($body);
 			$message->setDate($date);
+			$message->setCharset( get_bloginfo( 'charset') );
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
