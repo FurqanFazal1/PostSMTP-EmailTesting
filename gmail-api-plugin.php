@@ -154,8 +154,14 @@ class PostSMTPTestMail{
 		public function Send($message_details,$mId,$gmail){
 			$to=get_option('admin_email');
 			$subject=$message_details['messageSubject'];
+			$ContentType=$message_details['$contentType'];
 			$raw=$message_details['messageSnippet'];
-			$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
+			if($ContentType=='text/html'){
+				$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
+			}
+			else{
+				$body=$raw;
+			}
 			$date=$message_details['messageDate'];
 			$header=$message_details['headerdetails'];
 			
@@ -169,6 +175,7 @@ class PostSMTPTestMail{
 			$message->setBody($body);
 			$message->setDate($date);
 			$message->setCharset( get_bloginfo( 'charset') );
+			$message->setContentType($ContentType);
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
