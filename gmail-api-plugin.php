@@ -164,6 +164,7 @@ class PostSMTPTestMail{
 		//Sending message to Mailtrap
 		public function Send($message_details,$mId,$gmail){
 			$to=get_option('admin_email');
+			$from=$message_details['messageSender'];
 			$subject=$message_details['messageSubject'];
 			$Content_Type=$message_details['contentType'];
 			$raw=$message_details['messageSnippet'];
@@ -175,7 +176,7 @@ class PostSMTPTestMail{
 			//Create an instance of Postmanoptions from postsmtp to set message details 
 			$options = PostmanOptions::getInstance();
 			$message = new PostmanMessage();
-			$message->setFrom($to);
+			$message->setFrom($from);
 			$message->setReplyTo($to);
 			$message->setSubject($subject);
 			$message->setBody($body);
