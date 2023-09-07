@@ -120,6 +120,7 @@ class PostSMTPTestMail{
 				$html_response=null;
 				foreach($parts as $html){
 					$html_response=$html->getBody();
+					// $content_Type = $html->getMimeType();
 				}
 				$snippet = $html_response["data"];  
 				$mId= $mlist->id;
@@ -133,7 +134,9 @@ class PostSMTPTestMail{
         			} elseif ($data->getName() == 'From') {
             				$message_sender = $data->getValue();
             				$message_sender = str_replace('"', '', $message_sender);
-       				}
+       				} elseif ($data->getName() == 'Content-Type'){
+							$content_Type_alter = $data->getValue();
+			 		}
 				
 				}
 				
@@ -143,7 +146,8 @@ class PostSMTPTestMail{
         			'messageSubject' => $message_subject,
         			'messageDate' => $message_date,
         			'messageSender' => $message_sender,
-					'headerdetails' =>	$header_details
+					'headerdetails' =>	$header_details,
+					'contentType' => $content_Type_alter
     			);
 				break;
 				}
@@ -154,14 +158,10 @@ class PostSMTPTestMail{
 		public function Send($message_details,$mId,$gmail){
 			$to=get_option('admin_email');
 			$subject=$message_details['messageSubject'];
-			$ContentType=$message_details['$contentType'];
+			$Content_Type=$message_details['contentType'];
 			$raw=$message_details['messageSnippet'];
-			if($ContentType=='text/html'){
-				$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
-			}
-			else{
-				$body=$raw;
-			}
+			$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
+			$content = base64_decode(str_replace(['-', '_'], ['+', '/'], $Content_Type));
 			$date=$message_details['messageDate'];
 			$header=$message_details['headerdetails'];
 			
@@ -175,7 +175,7 @@ class PostSMTPTestMail{
 			$message->setBody($body);
 			$message->setDate($date);
 			$message->setCharset( get_bloginfo( 'charset') );
-			$message->setContentType($ContentType);
+			$message->setContentType($content);
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
