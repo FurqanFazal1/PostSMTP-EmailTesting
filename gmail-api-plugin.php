@@ -181,7 +181,7 @@ class PostSMTPTestMail{
 			$message->setBody($body);
 			$message->setDate($date);
 			$message->setCharset( get_bloginfo( 'charset') );
-			$message->setContentType('text/html');
+			$message->setContentType('text/plain');
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
