@@ -139,6 +139,13 @@ class PostSMTPTestMail{
 			 		}
 				
 				}
+
+				if($content_Type!=null){
+					$set_content = $content_Type;
+				}
+				else{
+					$set_content = 'text/plain';
+				}
 				
 				$this->message_details = array(
         			'messageId' => $mId,
@@ -174,7 +181,7 @@ class PostSMTPTestMail{
 			$message->setBody($body);
 			$message->setDate($date);
 			$message->setCharset( get_bloginfo( 'charset') );
-			$message->setContentType($Content_Type);
+			$message->setContentType('text/html');
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
