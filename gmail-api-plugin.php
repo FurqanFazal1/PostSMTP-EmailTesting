@@ -120,7 +120,7 @@ class PostSMTPTestMail{
 				$html_response=null;
 				foreach($parts as $html){
 					$html_response=$html->getBody();
-					// $content_Type = $html->getMimeType();
+					$content_Type = $html->getMimeType();
 				}
 				$snippet = $html_response["data"];  
 				$mId= $mlist->id;
@@ -147,7 +147,7 @@ class PostSMTPTestMail{
         			'messageDate' => $message_date,
         			'messageSender' => $message_sender,
 					'headerdetails' =>	$header_details,
-					'contentType' => $content_Type_alter
+					'contentType' => $content_Type
     			);
 				break;
 				}
@@ -161,7 +161,6 @@ class PostSMTPTestMail{
 			$Content_Type=$message_details['contentType'];
 			$raw=$message_details['messageSnippet'];
 			$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
-			$content = base64_decode(str_replace(['-', '_'], ['+', '/'], $Content_Type));
 			$date=$message_details['messageDate'];
 			$header=$message_details['headerdetails'];
 			
@@ -175,7 +174,7 @@ class PostSMTPTestMail{
 			$message->setBody($body);
 			$message->setDate($date);
 			$message->setCharset( get_bloginfo( 'charset') );
-			$message->setContentType($content);
+			$message->setContentType($Content_Type);
 			
 			// create the body parts (if they are both missing)
 			if ( $message->isBodyPartsEmpty() ) {
