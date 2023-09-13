@@ -314,15 +314,24 @@ class PostSMTPTestMail{
 }
 
 add_action( 'admin_init', function() {
+
+	$activate_plugin_list = get_option( 'active_plugins' );
+	if(in_array("post-smtp/postman-smtp.php",$activate_plugin_list)){
+
+		new PostSMTPTestMail();
 	
-	new PostSMTPTestMail();
+	}
 	
 }, 50 );
 
 //Deleting options from the table on deactivation
 function uninstall_deletion(){
+
+	if(get_option( "AccessToken")){
 		delete_option('AccessToken');
         delete_option('RefreshToken');
+	}
+		
 }
 register_deactivation_hook(
 			__FILE__,
