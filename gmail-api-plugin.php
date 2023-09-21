@@ -116,6 +116,7 @@ class PostSMTPTestMail{
 				$optParamsGet2['format'] = 'full';
     			$single_message = $this->gmail->users_messages->get('me', $mlist->id, $optParamsGet2);
 				$header_details = $single_message->getPayload()->getHeaders();
+				$snippett = $single_message->getSnippet();
 				$parts = $single_message->getPayload()->getParts();
 				$html_response=null;
 				foreach($parts as $html){
@@ -149,7 +150,7 @@ class PostSMTPTestMail{
 				
 				$this->message_details = array(
         			'messageId' => $mId,
-        			'messageSnippet' => $snippet,
+        			'messageSnippet' => $snippett,
         			'messageSubject' => $message_subject,
         			'messageDate' => $message_date,
         			'messageSender' => $message_sender,
@@ -167,8 +168,8 @@ class PostSMTPTestMail{
 			$from=$message_details['messageSender'];
 			$subject=$message_details['messageSubject'];
 			$Content_Type=$message_details['contentType'];
-			$raw=$message_details['messageSnippet'];
-			$body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
+			$body=$message_details['messageSnippet'];
+			// $body=base64_decode(str_replace(['-', '_'], ['+', '/'], $raw));
 			$date=$message_details['messageDate'];
 			$header=$message_details['headerdetails'];
 			
