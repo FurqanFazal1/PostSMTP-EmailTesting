@@ -317,7 +317,7 @@ class PostSMTPTestMail{
 add_action( 'admin_init', function() {
 
 	$activate_plugin_list = get_option( 'active_plugins' );
-	if(in_array( "post-smtp/postman-smtp.php",$activate_plugin_list ) || in_array( "Post-SMTP-Dev/postman-smtp.php",$activate_plugin_list )){
+	if(in_array( "post-smtp/postman-smtp.php",$activate_plugin_list ) || in_array( "Post-SMTP-dev/postman-smtp.php",$activate_plugin_list )){
 
 		new PostSMTPTestMail();
 	
