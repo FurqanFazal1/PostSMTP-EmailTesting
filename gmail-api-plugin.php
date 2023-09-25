@@ -20,9 +20,25 @@ class PostSMTPTestMail{
 	public $gmail;
 	
     public function __construct(){
-		require_once WP_PLUGIN_DIR.'/post-smtp/Postman/Postman-Mail/PostmanMailEngine.php';
-		//Directory for using this add on without parent sdk
-		include ( WP_PLUGIN_DIR.'/post-smtp/Postman/Postman-Mail/libs/vendor/autoload.php');
+
+		$activate_plugin_list = get_option( 'active_plugins' );
+		if(in_array( "post-smtp/postman-smtp.php",$activate_plugin_list )){
+
+			require_once WP_PLUGIN_DIR.'/post-smtp/Postman/Postman-Mail/PostmanMailEngine.php';
+			//Directory for using this add on without parent sdk
+			include ( WP_PLUGIN_DIR.'/post-smtp/Postman/Postman-Mail/libs/vendor/autoload.php');
+		
+		}
+
+		if( in_array( "Post-SMTP-dev/postman-smtp.php",$activate_plugin_list )){
+
+			require_once WP_PLUGIN_DIR.'/Post-SMTP-dev/Postman/Postman-Mail/PostmanMailEngine.php';
+			//Directory for using this add on without parent sdk
+			include ( WP_PLUGIN_DIR.'/Post-SMTP-dev/Postman/Postman-Mail/libs/vendor/autoload.php');
+		
+		}
+		
+		
 
 		//Directory for using this add on without parent sdk
         //include(dirname(__FILE__) . "/libs/vendor/autoload.php");
